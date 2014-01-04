@@ -1,10 +1,11 @@
 #!/bin/bash
-APP="$1"; IMAGE="app/$APP"; NAME="provision_$APP"
+APP="$1"; IMAGE="app/$APP"; NAME=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c 16)
 
 set -e
 
-echo "-----> Provisionning ..."
-
-docker run -name=$NAME $IMAGE /bin/bash /app/.provisioning
-docker commit $NAME $IMAGE > /dev/null
-echo "-----> OK"
+ID=$(docker run -d $IMAGE cat /app/.provisioning)
+if [ $(docker wait $ID) -eq 0 ]; then
+    echo "-----> Provisionning ..."
+    docker run -name=$NAME $IMAGE /bin/bash /app/.provisioning
+    docker commit $NAME $IMAGE > /dev/null
+fi
