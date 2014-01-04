@@ -1,0 +1,10 @@
+#!/bin/bash
+APP="$1"; IMAGE="app/$APP"; NAME="provision_$APP"
+
+set -e
+
+echo "-----> Provisionning ..."
+
+docker run -name=$NAME $IMAGE /bin/bash /app/.provisioning
+docker commit $NAME $IMAGE > /dev/null
+echo "-----> OK"
