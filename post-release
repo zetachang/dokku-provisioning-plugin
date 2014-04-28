@@ -3,7 +3,7 @@ APP="$1"; IMAGE="dokku/$APP"; NAME=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c 1
 
 set -e
 
-ID=$(docker run -d $IMAGE /bin/bash -c "cat /app/.provisioning || cat /dokku/app/.provisioning")
+ID=$(docker run -d $IMAGE /bin/bash -c "cat /app/.provisioning || cat /www/app/.provisioning")
 if [ $(docker wait $ID) -eq 0 ]; then
     echo "-----> Provisionning ..."
     docker run -name=$NAME $IMAGE /bin/bash -c "/bin/bash /app/.provisioning || /bin/bash /www/app/.provisioning"
