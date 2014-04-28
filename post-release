@@ -6,6 +6,6 @@ set -e
 ID=$(docker run -d $IMAGE /bin/bash -c "cat /app/.provisioning || cat /dokku/app/.provisioning")
 if [ $(docker wait $ID) -eq 0 ]; then
     echo "-----> Provisionning ..."
-    docker run -name=$NAME $IMAGE /bin/bash -c "/bin/bash /dokku/.provisioning || /bin/bash /dokku/app/.provisioning"
+    docker run -name=$NAME $IMAGE /bin/bash -c "/bin/bash /app/.provisioning || /bin/bash /www/app/.provisioning"
     docker commit $NAME $IMAGE > /dev/null
 fi
